@@ -1,3 +1,4 @@
+
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -36,11 +37,30 @@
 								<a href="/ssr/book/edit/${ book.id }">修改</a> 
 								&nbsp;|&nbsp; 
 								<a href="/ssr/book/delete/${ book.id }">刪除</a>
+								&nbsp;|&nbsp;
+								<form style="display:inline" method="post" action="/ssr/book/delete/${ book.id }">
+									<input type="hidden" name="_method" value="DELETE"/>
+									<button type="submit">刪除</button>
+								</form>
+								&nbsp;|&nbsp;
+								<a href="#" onclick="deleteBook(${ book.id })">刪除</a>
 							</td>
 						</tr>
 					</c:forEach>
 				</tbody>
 			</table>
 		</div>
+		
+		<script>
+			async function deleteBook(id) {
+				if(confirm('確定要刪除嗎?')) {
+					const response = await fetch('/ssr/book/delete/' + id, {method:'DELETE'});
+					if(response.redirected) {
+						window.location.href=response.url;
+					}
+				}
+			}
+		</script>
+		
 	</body>
 </html>
